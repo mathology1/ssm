@@ -37,5 +37,6 @@ public class AccountController {
         System.out.println("在master加的代码");
         System.out.println("在hotfix加的代码第二次");
         System.out.println("push");
+        System.out.println("在远程加的代码，用作测试pull到本地");
     }
 }
