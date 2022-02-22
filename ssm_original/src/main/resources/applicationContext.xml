@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                            http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd
+                            http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--spring的配置文件(容器)-->
+
+    <!--组件扫描
+        spring负责扫描service和dao
+        springMVC负责扫描controller-->
+    <context:component-scan base-package="ssm">
+        <!--不扫描@controller注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+
+    <!--整合1.spring整合mybatis，迁移数据源到spring容器中-->
+    <!--加载properties文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--name属性，值是德鲁规定的，不能改，properties的key任意-->
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--整合2.配置SessionFactory
+        spring与mybatis整合包里有SessionFactory接口的实现类：SessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--加载mybatis配置文件-->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+    </bean>
+
+    <!--整合3.扫描加载映射文件mapper，为dao创建实现类-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定要扫描的存有mapper文件的包-->
+        <property name="basePackage" value="ssm.dao"/>
+    </bean>
+
+    <!--整合4.配置事务管理器，由spring统一进行事务管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+    <!--整合4.开启事务管理器-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

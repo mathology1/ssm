@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table  style="text-align: center" border="1" cellspacing="0" cellpadding="0">
+    <tr>
+        <th>账户id</th>
+        <th>账户姓名</th>
+        <th>账户金额</th>
+    </tr>
+    <tr th:each="acc:${accList}">
+        <td th:text="${acc.id}"></td>
+        <td th:text="${acc.name}"></td>
+        <td th:text="${acc.money}"></td>
+    </tr>
+</table>
+</body>
+</html>

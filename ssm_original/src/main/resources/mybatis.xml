@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--加载properties文件，整合至spring容器applicationContext-->
+    <!--<properties resource="jdbc.properties"/>-->
+
+    <!--设置日志-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!--起别名-->
+    <!--<typeAliases>
+        <package name="mybatis.pojo"/>
+    </typeAliases>-->
+
+    <!--分页-->
+    <plugins>
+        <plugin interceptor ="com.github.pagehelper.PageInterceptor" />
+    </plugins>
+
+    <!--环境，整合至spring容器applicationContext-->
+    <!--<environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            &lt;!&ndash;配置数据源： 创建Connection对象。&ndash;&gt;
+            <dataSource type="POOLED">
+                &lt;!&ndash;属性名必须用以下名字&ndash;&gt;
+                <property name="driver" value="${jdbc.driver}"/>
+                &lt;!&ndash;xml文件中不能直接用<、>、&等符号，要用其对应的实体&ndash;&gt;
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>-->
+
+
+
+    <!--加载映射，整合至spring容器applicationContext-->
+    <!--<mappers>
+        &lt;!&ndash;resource属性：指定此mapper的路径，从target/class目录开始，快捷复制：右键文件->path from source root&ndash;&gt;
+        <mapper resource="ssm/dao/AccountDao.xml"/>
+        &lt;!&ndash;<package name="mybatis.dao"/>&ndash;&gt;
+    </mappers>-->
+
+</configuration>

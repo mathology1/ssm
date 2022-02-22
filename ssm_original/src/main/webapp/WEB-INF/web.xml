@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!--*spring监听器，
+        用于加载spring的applicationContext.xml
+        spring的IOC容器是springMVCIOC容器的父容器，需要交给springMVC来加载
+        -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--*配置控制器dispatcherServlet -->
+    <servlet>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+        <!--配置此Servlet的初始化参数，伴随着当前Servlet的加载而初始化的
+            要初始化的是IOC容器的创建，即在springMVC.xml里写bean标签-->
+        <init-param>
+            <!--参数名是固定的，是已经在监听器里定义好的，只需要给其赋值即可-->
+            <param-name>contextConfigLocation</param-name>
+            <!--指定类路径，maven工程的xml的位置在resource目录下-->
+            <param-value>classpath:springMVC.xml</param-value>
+        </init-param>
+
+        <!--将dispatcherServlet的初始化提前到服务器启动时
+        目的：提高服务器响应速度-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <!--/除了.jsp不能拦截，其他都能拦，/*可以拦所有-->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+    <!--*配置编码过滤器-->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <!--设置请求编码-->
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <!--设置响应编码-->
+            <param-name>forceResponseEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!--配置处理PUT和DELETE请求的过滤器-->
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+        <!--HiddenHttpMethodFilter的源码中，执行过滤的方法
+        和CharacterEncodingFilter一样
+        都是doFilterInternal(req，resp，filterChain)-->
+    </filter>
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>
