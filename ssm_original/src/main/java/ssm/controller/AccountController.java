@@ -34,5 +34,6 @@ public class AccountController {
     public void m(){
         System.out.println("test git switch version");
         System.out.println("在hotfix加的代码");
+        System.out.println("在hotfix加的代码第二次");
     }
 }
