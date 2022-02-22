@@ -30,4 +30,8 @@ public class AccountController {
         model.addAttribute("accList", accList);
         return "list";
     }
+
+    public void m(){
+        System.out.println("test git switch version");
+    }
 }

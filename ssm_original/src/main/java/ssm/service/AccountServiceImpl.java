@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Transactional//对ServiceImpl下的所有方法进行事务管理
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
     //spring整合MyBatis后，可以直接注入
     @Autowired
